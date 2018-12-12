@@ -1,0 +1,8 @@
+web.py
+Jinja2
+psycopg2
+phonenumbers
+simplejson
+xlwt
+XlsxWriter
+rapidpro-python
