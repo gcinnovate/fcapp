@@ -66,3 +66,18 @@ VALUES
         (SELECT id FROM fcapp_user_roles WHERE name ='Administrator'),'t'),
         ('Ivan','Muguya','ivan', '+256756253430', crypt('ivan',gen_salt('bf')),'ivanupsons@gmail.com',
         (SELECT id FROM fcapp_user_roles WHERE name ='API User'),'t');
+
+
+CREATE OR REPLACE FUNCTION fcapp_get_secondary_receivers(contact text, OUT name text, OUT uuid text, OUT msisdn text, OUT contact_field int)
+    RETURNS SETOF record
+AS $$
+    WITH t AS
+        (SELECT contact_id, string_value, contact_field_id FROM values_value
+            WHERE
+            contact_field_id IN (SELECT id FROM contacts_contactfield WHERE label IN('HoH MSISDN', 'SecReceiver MSISDN'))
+            AND substring(reverse(string_value), 0, 9) = substring(reverse(contact), 0, 9)
+        )
+            SELECT a.name, a.uuid, t.string_value, t.contact_field_id
+            FROM contacts_contact a, t
+            WHERE t.contact_id = a.id;
+$$ LANGUAGE SQL;
