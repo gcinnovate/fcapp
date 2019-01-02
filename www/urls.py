@@ -10,7 +10,7 @@ from app.controllers.groups_handler import Groups
 from app.controllers.auditlog_handler import AuditLog
 from app.controllers.forgotpass_handler import ForgotPass
 from app.controllers.eventmessage_handler import EventMessageForLanguage
-from app.controllers.secreceivers_handler import SecondaryReceivers
+from app.controllers.secreceivers_handler import SecondaryReceivers, OptOutSecondaryReceiver
 
 URLS = (
     r'^/', Index,
@@ -21,5 +21,6 @@ URLS = (
     r'/forgotpass', ForgotPass,
     # API stuff follows
     r'/eventmessage', EventMessageForLanguage,
-    r'/secreceivers', SecondaryReceivers
+    r'/secreceivers', SecondaryReceivers,
+    r'/optout_secondaryreceiver', OptOutSecondaryReceiver
 )

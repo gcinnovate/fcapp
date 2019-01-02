@@ -2,7 +2,7 @@ import web
 import json
 import pprint
 from . import db
-from app.tools.utils import get_basic_auth_credentials, auth_user
+from app.tools.utils import get_basic_auth_credentials, auth_user, get_webhook_msg_old
 # from settings import config
 
 
@@ -34,6 +34,7 @@ class SecondaryReceivers:
                     payload['secreceivers']['%s' % idx] = {
                         'name': r['name'],
                         'uuid': r['uuid'],
+                        'contact_id': r['contact_id'],
                         'contact_field': r['contact_field']
                     }
                 elif idx > 5 and idx < 11:
@@ -65,3 +66,34 @@ class SecondaryReceivers:
         pprint.pprint(payload)
 
         return json.dumps(payload)
+
+
+class OptOutSecondaryReceiver:
+    def POST(self):
+        params = web.input(contact="")
+        web.header("Content-Type", "application/json; charset=utf-8")
+        username, password = get_basic_auth_credentials()
+        r = auth_user(db, username, password)
+        if not r[0]:
+            web.header('WWW-Authenticate', 'Basic realm="Auth API"')
+            web.ctx.status = '401 Unauthorized'
+            return json.dumps({'detail': 'Authentication failed!'})
+
+        secreceivers = get_webhook_msg_old(params, 'secreceivers')
+        pprint.pprint(secreceivers)
+
+        payload = json.loads(secreceivers)
+        optout_option = get_webhook_msg_old(params, 'OptOutOption')
+        print("OptOutOption => ", optout_option)
+
+        contact_details = payload['%s' % int(float(optout_option))]
+        contact_id = contact_details['contact_id']
+        contact_field = contact_details['contact_field']
+        print("contact_id=>", contact_id, " fields => ", contact_field)
+
+        db.query(
+            "UPDATE values_value SET (string_value, decimal_value) = ('', NULL) "
+            "WHERE contact_id = $contact_id AND contact_field_id = $contact_field_id", {
+                'contact_id': contact_id, 'contact_field_id': contact_field})
+
+        return json.dumps({'success': 'True'})

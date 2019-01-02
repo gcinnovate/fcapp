@@ -68,7 +68,8 @@ VALUES
         (SELECT id FROM fcapp_user_roles WHERE name ='API User'),'t');
 
 
-CREATE OR REPLACE FUNCTION fcapp_get_secondary_receivers(contact text, OUT name text, OUT uuid text, OUT msisdn text, OUT contact_field int)
+CREATE OR REPLACE FUNCTION fcapp_get_secondary_receivers(contact text, OUT contact_id int, OUT name text, OUT uuid text,
+    OUT msisdn text, OUT contact_field int)
     RETURNS SETOF record
 AS $$
     WITH t AS
@@ -77,7 +78,23 @@ AS $$
             contact_field_id IN (SELECT id FROM contacts_contactfield WHERE label IN('HoH MSISDN', 'SecReceiver MSISDN'))
             AND substring(reverse(string_value), 0, 9) = substring(reverse(contact), 0, 9)
         )
-            SELECT a.name, a.uuid, t.string_value, t.contact_field_id
+            SELECT a.id, a.name, a.uuid, t.string_value, t.contact_field_id
             FROM contacts_contact a, t
             WHERE t.contact_id = a.id;
 $$ LANGUAGE SQL;
+
+CREATE VIEW fcapp_contact_fields_view AS
+SELECT
+    a.id, a.name,
+    b.string_value AS dob_child_1,
+    c.string_value AS dob_child_2,
+    d.string_value AS dob_child_3,
+    b.id AS dob1_id,
+    c.id AS dob2_id,
+    d.id AS dob3_id
+
+FROM
+    contacts_contact a
+    LEFT OUTER JOIN values_value b ON (a.id = b.contact_id AND b.contact_field_id = 20)
+    LEFT OUTER JOIN values_value c ON (a.id = c.contact_id AND c.contact_field_id = 21)
+    LEFT OUTER JOIN values_value d ON (a.id = d.contact_id AND d.contact_field_id = 22);
