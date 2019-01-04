@@ -70,7 +70,7 @@ class SecondaryReceivers:
 
 class OptOutSecondaryReceiver:
     def POST(self):
-        params = web.input(contact="")
+        params = web.input(optoutall="false")
         web.header("Content-Type", "application/json; charset=utf-8")
         username, password = get_basic_auth_credentials()
         r = auth_user(db, username, password)
@@ -81,8 +81,17 @@ class OptOutSecondaryReceiver:
 
         secreceivers = get_webhook_msg_old(params, 'secreceivers')
         pprint.pprint(secreceivers)
-
         payload = json.loads(secreceivers)
+        if params.optoutall == "true":
+            for k, v in payload.iteritems():
+                contact_id = v['contact_id']
+                contact_field = v['contact_field']
+                db.query(
+                    "UPDATE values_value SET (string_value, decimal_value) = ('', NULL) "
+                    "WHERE contact_id = $contact_id AND contact_field_id = $contact_field_id", {
+                        'contact_id': contact_id, 'contact_field_id': contact_field})
+            return json.dumps({'success': 'true'})
+
         optout_option = get_webhook_msg_old(params, 'OptOutOption')
         print("OptOutOption => ", optout_option)
 
