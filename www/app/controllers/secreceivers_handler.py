@@ -8,7 +8,7 @@ from app.tools.utils import get_basic_auth_credentials, auth_user, get_webhook_m
 
 class SecondaryReceivers:
     def GET(self):
-        params = web.input(contact="")
+        params = web.input(contact="", babytrigger="false")
         web.header("Content-Type", "application/json; charset=utf-8")
         username, password = get_basic_auth_credentials()
         r = auth_user(db, username, password)
@@ -18,8 +18,11 @@ class SecondaryReceivers:
             return json.dumps({'detail': 'Authentication failed!'})
         print(params.contact)
         SQL = (
-            "SELECT * FROM fcapp_get_secondary_receivers($contact)"
+            "SELECT * FROM fcapp_get_secondary_receivers($contact) "
         )
+        if params.babytrigger == "true":
+            SQL += " WHERE has_msisdn = 'f'"
+
         res = db.query(SQL, {'contact': params.contact})
         payload = {'secreceivers': {}}
         receivers_count = 0
@@ -42,6 +45,7 @@ class SecondaryReceivers:
                     payload['secreceivers']['%s' % (idx + 1)] = {
                         'name': r['name'],
                         'uuid': r['uuid'],
+                        'contact_id': r['contact_id'],
                         'contact_field': r['contact_field']
                     }
                 elif idx > 10 and idx < 16:
@@ -49,6 +53,7 @@ class SecondaryReceivers:
                     payload['secreceivers']['%s' % (idx + 2)] = {
                         'name': r['name'],
                         'uuid': r['uuid'],
+                        'contact_id': r['contact_id'],
                         'contact_field': r['contact_field']
                     }
         if screen_2:
