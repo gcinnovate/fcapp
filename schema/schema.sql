@@ -68,8 +68,36 @@ VALUES
         (SELECT id FROM fcapp_user_roles WHERE name ='API User'),'t');
 
 
+CREATE OR REPLACE FUNCTION fcapp_has_msisdn(contactid INT) RETURNS BOOLEAN AS
+$delim$
+    DECLARE
+        c_id INTEGER;
+    BEGIN
+        SELECT id INTO c_id FROM contacts_contacturn WHERE contact_id = contactid;
+        IF FOUND THEN
+            RETURN TRUE;
+        END IF;
+        RETURN FALSE;
+    END;
+$delim$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION fcapp_has_hoh_msisdn(contactid INT) RETURNS BOOLEAN AS
+$delim$
+    DECLARE
+        c_id INTEGER;
+    BEGIN
+        SELECT id INTO c_id FROM values_value WHERE contact_id = contactid
+            AND contact_field_id = (SELECT id FROM contacts_contactfield WHERE label = 'HoH MSISDN');
+        IF FOUND THEN
+            RETURN TRUE;
+        END IF;
+        RETURN FALSE;
+
+    END;
+$delim$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION fcapp_get_secondary_receivers(contact text, OUT contact_id int, OUT name text, OUT uuid text,
-    OUT msisdn text, OUT contact_field int)
+    OUT msisdn text, OUT contact_field int, OUT has_msisdn BOOLEAN, OUT has_hoh_msisdn BOOLEAN)
     RETURNS SETOF record
 AS $$
     WITH t AS
@@ -78,7 +106,8 @@ AS $$
             contact_field_id IN (SELECT id FROM contacts_contactfield WHERE label IN('HoH MSISDN', 'SecReceiver MSISDN'))
             AND substring(reverse(string_value), 0, 9) = substring(reverse(contact), 0, 9)
         )
-            SELECT a.id, a.name, a.uuid, t.string_value, t.contact_field_id
+            SELECT a.id, a.name, a.uuid, t.string_value, t.contact_field_id,
+                fcapp_has_msisdn(a.id) AS has_msisdn, fcapp_has_hoh_msisdn(a.id) AS has_hoh_msisdn
             FROM contacts_contact a, t
             WHERE t.contact_id = a.id;
 $$ LANGUAGE SQL;

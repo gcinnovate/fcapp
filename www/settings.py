@@ -42,6 +42,8 @@ config = {
     'api_url': 'http://localhost:8000/api/v2/',
     'prebirth_campaign': '',
     'postbirth_campaign': '',
+    'familyconnect_uri': 'http://localhost:8000/',
+    'babytrigger_flow_uuid': 'ea3ddc42-9224-42ad-b4bc-14b62242d6c6'
 }
 
 try:

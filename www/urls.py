@@ -11,6 +11,8 @@ from app.controllers.auditlog_handler import AuditLog
 from app.controllers.forgotpass_handler import ForgotPass
 from app.controllers.eventmessage_handler import EventMessageForLanguage
 from app.controllers.secreceivers_handler import SecondaryReceivers, OptOutSecondaryReceiver
+from app.controllers.test_handler import Test
+from app.controllers.babytrigger_handler import StartBabyTriggerFlow
 
 URLS = (
     r'^/', Index,
@@ -20,7 +22,9 @@ URLS = (
     r'/logout', Logout,
     r'/forgotpass', ForgotPass,
     # API stuff follows
+    r'/test', Test,
     r'/eventmessage', EventMessageForLanguage,
     r'/secreceivers', SecondaryReceivers,
-    r'/optout_secondaryreceiver', OptOutSecondaryReceiver
+    r'/optout_secondaryreceiver', OptOutSecondaryReceiver,
+    r'/startbabytriggerflow', StartBabyTriggerFlow
 )

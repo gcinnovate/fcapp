@@ -29,6 +29,9 @@ class SecondaryReceivers:
         screen_1 = ""
         screen_2 = ""
         screen_3 = ""
+        # screen_1_len = 0
+        # screen_2_len = 0
+        # screen_3_len = 0
         if res:
             for idx, r in enumerate(res, 1):
                 receivers_count += 1
@@ -56,6 +59,11 @@ class SecondaryReceivers:
                         'contact_id': r['contact_id'],
                         'contact_field': r['contact_field']
                     }
+
+        # screen_1_len = len(screen_1.strip().split('\n'))
+        # screen_2_len = len(screen_2.strip().split('\n')) if screen_2 else 0
+        # screen_3_len = len(screen_3.strip().split('\n')) if screen_3 else 0
+
         if screen_2:
             screen_1 += "6. More\n"
             screen_2 += "0. Back"
@@ -67,6 +75,9 @@ class SecondaryReceivers:
         payload['screen_1'] = screen_1
         payload['screen_2'] = screen_2
         payload['screen_3'] = screen_3
+        # payload['screen_1_len'] = screen_1_len
+        # payload['screen_2_len'] = screen_2_len
+        # payload['screen_3_len'] = screen_3_len
 
         pprint.pprint(payload)
 
@@ -100,7 +111,13 @@ class OptOutSecondaryReceiver:
         optout_option = get_webhook_msg_old(params, 'OptOutOption')
         print("OptOutOption => ", optout_option)
 
-        contact_details = payload['%s' % int(float(optout_option))]
+        try:
+            contact_details = payload['%s' % int(float(optout_option))]
+        except:
+            contact_details = None
+        if not contact_details:
+            return json.dumps({'success': 'False'})
+
         contact_id = contact_details['contact_id']
         contact_field = contact_details['contact_field']
         print("contact_id=>", contact_id, " fields => ", contact_field)
