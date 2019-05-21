@@ -13,6 +13,7 @@ from app.controllers.eventmessage_handler import EventMessageForLanguage
 from app.controllers.secreceivers_handler import SecondaryReceivers, OptOutSecondaryReceiver
 from app.controllers.test_handler import Test
 from app.controllers.babytrigger_handler import StartBabyTriggerFlow
+from app.controllers.locations_handler import SubRegionDistricts, DistrictSubcounties
 
 URLS = (
     r'^/', Index,
@@ -26,5 +27,7 @@ URLS = (
     r'/eventmessage', EventMessageForLanguage,
     r'/secreceivers', SecondaryReceivers,
     r'/optout_secondaryreceiver', OptOutSecondaryReceiver,
-    r'/startbabytriggerflow', StartBabyTriggerFlow
+    r'/startbabytriggerflow', StartBabyTriggerFlow,
+    r'/subregion_districts/(\w+)/?', SubRegionDistricts,
+    r'/district_subcounties/(\w+)/?', DistrictSubcounties
 )

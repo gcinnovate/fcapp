@@ -58,7 +58,7 @@ VALUES('Administrator','For the Administrators'), ('API User', 'For the API User
 
 INSERT INTO fcapp_user_role_permissions(user_role, sys_module,sys_perms)
 VALUES
-        ((SELECT id FROM user_roles WHERE name ='Administrator'),'Users','rw');
+        ((SELECT id FROM fcapp_user_roles WHERE name ='Administrator'),'Users','rw');
 
 INSERT INTO fcapp_users(firstname,lastname,username,telephone,password,email,user_role,is_system_user)
 VALUES

@@ -37,11 +37,13 @@ class StartBabyTriggerFlow:
         contact_uuid = contact_details['uuid']
         print("contact_id=>", contact_id, " uuid => ", contact_uuid)
 
+        date_of_birth = get_webhook_msg_old(params, 'child_dob')
+
         try:
             client.create_flow_start(
                 config['babytrigger_flow_uuid'],
                 contacts=[contact_uuid],
-                extra=None)
+                extra={'child_dob': date_of_birth})
         except:
             pass
 
