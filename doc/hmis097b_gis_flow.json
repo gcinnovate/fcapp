@@ -1,0 +1,759 @@
+{
+  "campaigns": [], 
+  "version": 10, 
+  "site": "https://app.rapidpro.io", 
+  "flows": [
+    {
+      "base_language": "eng", 
+      "action_sets": [
+        {
+          "y": 140, 
+          "x": 867, 
+          "destination": null, 
+          "uuid": "6d6d3786-1bc0-45f9-b55b-417794982cfd", 
+          "actions": [
+            {
+              "msg": {
+                "eng": "please resend"
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }, 
+        {
+          "y": 889, 
+          "x": 687, 
+          "destination": null, 
+          "uuid": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+          "actions": [
+            {
+              "msg": {
+                "eng": "Please resend"
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }, 
+        {
+          "y": 1857, 
+          "x": 350, 
+          "destination": "32e6b0ab-0c21-4027-9abf-44d78c975a94", 
+          "uuid": "5f04d50b-31da-4802-a1cf-e9eaf0c3ca1c", 
+          "actions": [
+            {
+              "msg": {
+                "eng": "You reported.\n@flow.hh_number HH#\n@flow.male_lt_1_month (M<1month)\n@flow.female_lt_1_month (F<1m)\n@flow.male_1_11_month (M 1-11)\n@flow.female_1_11_month (F1-11months)\n@flow.male_1_5_yrs (M1-5yr)\n@flow.female_1_5_yrs (F1-5yr)\n@flow.male_10_14_yrs (M10-14)\n@flow.female_10_14_yrs (F10-14yr)\n@flow.male_15_19_yrs (M15-19)\n@flow.female_15_19_yrs (F15-19yr)\n@flow.male_20_24_yrs (M20-24),\n@flow.female_20_24_yrs (F20-24yr)\n@flow.male_25_49_yrs (M25-49)\n@flow.female_25_49_yrs (F25-49yr)\n\nIf there's an error, please resend."
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }, 
+        {
+          "y": 2718, 
+          "x": 310, 
+          "destination": null, 
+          "uuid": "b3560f3b-b261-4e93-916c-a5c5a8522a9d", 
+          "actions": [
+            {
+              "msg": {
+                "eng": "Sent"
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }
+      ], 
+      "version": 10, 
+      "flow_type": "F", 
+      "entry": "2b03e188-8c4f-4f20-9068-14c2aa123b8c", 
+      "rule_sets": [
+        {
+          "uuid": "2b03e188-8c4f-4f20-9068-14c2aa123b8c", 
+          "rules": [
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "All Responses"
+              }, 
+              "destination": "3528d0e7-d077-445a-acbd-6d228a7bd6c8", 
+              "uuid": "3bd302a1-48c2-492f-959e-ee98bc6dd237", 
+              "destination_type": "R"
+            }
+          ], 
+          "ruleset_type": "expression", 
+          "label": "Report", 
+          "operand": "@(REMOVE_FIRST_WORD(step.value))", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 1, 
+          "x": 451, 
+          "config": {}
+        }, 
+        {
+          "uuid": "3528d0e7-d077-445a-acbd-6d228a7bd6c8", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "HH Number"
+              }, 
+              "destination": "f97cd4fd-a5cd-4c25-a513-051e93a5854d", 
+              "uuid": "69ed1226-5e29-47cd-93c2-59f250882823", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "6d6d3786-1bc0-45f9-b55b-417794982cfd", 
+              "uuid": "2bec6c32-b0b8-4919-b302-e53b54440d6d", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "hh_number", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 119, 
+          "x": 416, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 0
+          }
+        }, 
+        {
+          "uuid": "f97cd4fd-a5cd-4c25-a513-051e93a5854d", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Male < 1 month"
+              }, 
+              "destination": "5fd5e279-1316-4845-a1b1-c8b2b64ba29f", 
+              "uuid": "84fa048c-eb7d-4cc6-9130-13bc26aaf55e", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "6d6d3786-1bc0-45f9-b55b-417794982cfd", 
+              "uuid": "a54b73cd-3db1-4a27-a772-64bb3580f2ee", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "male_lt_1_month", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 217, 
+          "x": 412, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 1
+          }
+        }, 
+        {
+          "uuid": "5fd5e279-1316-4845-a1b1-c8b2b64ba29f", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Female < 1 month"
+              }, 
+              "destination": "6520af9a-2d55-4560-865b-347402dc3d43", 
+              "uuid": "8eebd915-ebad-4481-b56c-82ba04ceedad", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "6d6d3786-1bc0-45f9-b55b-417794982cfd", 
+              "uuid": "055290c9-4952-473c-b6cb-1ebac79b3b20", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "female_lt_1_month", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 320, 
+          "x": 414, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 2
+          }
+        }, 
+        {
+          "uuid": "6520af9a-2d55-4560-865b-347402dc3d43", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Male 1-11 months"
+              }, 
+              "destination": "9b649ba2-1890-4757-9e06-ec14ec3273a8", 
+              "uuid": "b93b54ed-6e9a-471b-959b-e0f85f522611", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "6d6d3786-1bc0-45f9-b55b-417794982cfd", 
+              "uuid": "7e927757-9fac-4360-91ec-a1af29756122", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "male_1_11_month", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 423, 
+          "x": 414, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 3
+          }
+        }, 
+        {
+          "uuid": "9b649ba2-1890-4757-9e06-ec14ec3273a8", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Female 1-11 Month"
+              }, 
+              "destination": "62a0d017-3a38-4569-9379-3bc21c25ab01", 
+              "uuid": "4770b7ab-204a-4db9-ac6c-981aa67a5368", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "6d6d3786-1bc0-45f9-b55b-417794982cfd", 
+              "uuid": "46c247ba-eb21-4403-a098-18abb944c844", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "female_1_11_month", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 518, 
+          "x": 408, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 4
+          }
+        }, 
+        {
+          "uuid": "62a0d017-3a38-4569-9379-3bc21c25ab01", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Male 1-5 yrs"
+              }, 
+              "destination": "544f1c3e-15a7-4e6f-ac23-df4e246ef15b", 
+              "uuid": "21ca578a-492c-4c9b-95ed-05bb0a9217c4", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "6d6d3786-1bc0-45f9-b55b-417794982cfd", 
+              "uuid": "ff630bb6-9e5b-4044-999f-4e7bbf5f8858", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "male_1_5_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 632, 
+          "x": 397, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 5
+          }
+        }, 
+        {
+          "uuid": "544f1c3e-15a7-4e6f-ac23-df4e246ef15b", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Female 1-5 yrs"
+              }, 
+              "destination": "f9af6df6-1b6c-4bad-a4a9-4f405ed5ca6c", 
+              "uuid": "a418df0d-6d7d-48ec-9ce4-57a957f49cd5", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "6d6d3786-1bc0-45f9-b55b-417794982cfd", 
+              "uuid": "cc2cbca6-42f1-4ae9-8b80-c4ab239cbb4f", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "female_1_5_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 738, 
+          "x": 398, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 6
+          }
+        }, 
+        {
+          "uuid": "f9af6df6-1b6c-4bad-a4a9-4f405ed5ca6c", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Male 10-14 yrs"
+              }, 
+              "destination": "d15c5a8c-f399-488a-bcdd-64b045cb28be", 
+              "uuid": "8a06a234-9b9d-4488-ba50-cee4f245be8b", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+              "uuid": "d4ab753b-f8f4-4062-9ea0-fa54c5df4cb6", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "male_10_14_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 841, 
+          "x": 405, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 7
+          }
+        }, 
+        {
+          "uuid": "d15c5a8c-f399-488a-bcdd-64b045cb28be", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Female 10-14 yrs"
+              }, 
+              "destination": "3c5b44f9-6b63-456d-8b34-ae11597422a1", 
+              "uuid": "742138aa-bec4-4af7-8808-e0c57c612695", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+              "uuid": "8c0fcbbf-92cf-4864-8957-18dcad1214bd", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "female_10_14_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 950, 
+          "x": 399, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 8
+          }
+        }, 
+        {
+          "uuid": "3c5b44f9-6b63-456d-8b34-ae11597422a1", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Male 15-19 yrs"
+              }, 
+              "destination": "2a177827-f93b-45ed-b7ca-edd1f1fc288c", 
+              "uuid": "3ae4e5bb-4c1f-441a-a07a-6bc9aed2b624", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+              "uuid": "31f6db01-d17e-4c69-8da1-85afe9357548", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "male_15_19_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 1054, 
+          "x": 382, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 9
+          }
+        }, 
+        {
+          "uuid": "2a177827-f93b-45ed-b7ca-edd1f1fc288c", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Female 15-19 yrs"
+              }, 
+              "destination": "1163f0a2-d1ad-4e46-9eb1-3ba7a8e66c3f", 
+              "uuid": "ab9b1a6e-a5a3-4bf2-809f-9f9edf74c809", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+              "uuid": "26c0c7c0-dad6-4027-be2a-54568ba8d5fa", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "female_15_19_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 1153, 
+          "x": 383, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 10
+          }
+        }, 
+        {
+          "uuid": "1163f0a2-d1ad-4e46-9eb1-3ba7a8e66c3f", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Male 20-24 yrs"
+              }, 
+              "destination": "89bf8f2d-861c-4398-af62-e3a03b505cb0", 
+              "uuid": "cd8893cd-4a65-4e31-8b7b-cbdd75f01dfe", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+              "uuid": "17093455-f902-4740-a702-6b32dd6706be", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "male_20_24_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 1269, 
+          "x": 370, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 11
+          }
+        }, 
+        {
+          "uuid": "89bf8f2d-861c-4398-af62-e3a03b505cb0", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Female 20-24 yrs"
+              }, 
+              "destination": "b8f29f97-a28a-41ea-af64-89621d9156de", 
+              "uuid": "77a313ab-bae3-4d57-9cd7-1c07d9b2482c", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+              "uuid": "fcab43cc-7da8-4fef-ab15-782ff64fa398", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "female_20_24_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 1378, 
+          "x": 357, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 12
+          }
+        }, 
+        {
+          "uuid": "b8f29f97-a28a-41ea-af64-89621d9156de", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Male 25-49 yrs"
+              }, 
+              "destination": "e1a9172a-2b2d-4ada-a72e-13145fb9fe11", 
+              "uuid": "97e40175-8c04-40e7-aba7-0c93f593cb80", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+              "uuid": "e0e70156-66fc-4191-b4c7-66bf860e75ea", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "male_25_49_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 1519, 
+          "x": 358, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 13
+          }
+        }, 
+        {
+          "uuid": "e1a9172a-2b2d-4ada-a72e-13145fb9fe11", 
+          "rules": [
+            {
+              "test": {
+                "type": "number"
+              }, 
+              "category": {
+                "eng": "Female 25-49 yrs"
+              }, 
+              "destination": "5f04d50b-31da-4802-a1cf-e9eaf0c3ca1c", 
+              "uuid": "2f97f79c-56ec-4c4e-91ec-383f6cc9e9d2", 
+              "destination_type": "A"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "eng": "Other"
+              }, 
+              "destination": "c4b9c84c-8f6a-445c-815f-91a3d34fadfe", 
+              "uuid": "678667d6-9946-416f-8a13-bf30982bb188", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "form_field", 
+          "label": "female_25_49_yrs", 
+          "operand": "@flow.report", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 1661, 
+          "x": 372, 
+          "config": {
+            "field_delimiter": ".", 
+            "field_index": 14
+          }
+        }, 
+        {
+          "uuid": "32e6b0ab-0c21-4027-9abf-44d78c975a94", 
+          "rules": [
+            {
+              "test": {
+                "status": "success", 
+                "type": "webhook_status"
+              }, 
+              "category": {
+                "eng": "Success"
+              }, 
+              "destination": "b3560f3b-b261-4e93-916c-a5c5a8522a9d", 
+              "uuid": "ea7743f3-48b2-4583-8ec4-89f20a8b18c0", 
+              "destination_type": "A"
+            }, 
+            {
+              "test": {
+                "status": "failure", 
+                "type": "webhook_status"
+              }, 
+              "category": {
+                "eng": "Failure"
+              }, 
+              "destination": "b3560f3b-b261-4e93-916c-a5c5a8522a9d", 
+              "uuid": "2064d2d3-2128-4995-b4e4-638fc031cc52", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "webhook", 
+          "label": "Response 17", 
+          "operand": "@step.value", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 2560, 
+          "x": 328, 
+          "config": {
+            "webhook": "http://localhost:9393/flowdata?msisdn=@contact.tel_e164&district=Gulu&facility=@contact.facility&subcounty=@contact.sub_county&village=@contact.village&report_type=gis&facilityuid=@contact.facilityuid", 
+            "webhook_action": "POST", 
+            "webhook_headers": []
+          }
+        }
+      ], 
+      "metadata": {
+        "uuid": "a6a6ac69-f2f8-4aef-9fb0-d2cc8390af1c", 
+        "notes": [
+          {
+            "y": 2662, 
+            "x": 651, 
+            "body": "http://localhost:9393/flowdata?msisdn=@contact.tel_e164&district=Gulu&facility=@contact.facility&subcounty=@contact.sub_county&village=@contact.village&report_type=gis&facilityuid=@contact.facilityuid", 
+            "title": "New Note"
+          }
+        ], 
+        "expires": 10080, 
+        "name": "VHT97B General Information Summary", 
+        "saved_on": "2019-11-01T15:38:03.964017Z", 
+        "revision": 133
+      }
+    }
+  ], 
+  "triggers": [
+    {
+      "trigger_type": "K", 
+      "flow": {
+        "name": "VHT97B General Information Summary", 
+        "uuid": "a6a6ac69-f2f8-4aef-9fb0-d2cc8390af1c"
+      }, 
+      "groups": [], 
+      "keyword": "gis", 
+      "channel": null
+    }
+  ]
+}
