@@ -127,3 +127,21 @@ FROM
     LEFT OUTER JOIN values_value b ON (a.id = b.contact_id AND b.contact_field_id = 20)
     LEFT OUTER JOIN values_value c ON (a.id = c.contact_id AND c.contact_field_id = 21)
     LEFT OUTER JOIN values_value d ON (a.id = d.contact_id AND d.contact_field_id = 22);
+
+CREATE TABLE fcapp_flow_data(
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    msisdn TEXT NOT NULL DEFAULT '',
+    district INTEGER REFERENCES fcapp_locations(id),
+    facility TEXT NOT NULL DEFAULT '',
+    facilityuid TEXT NOT NULL DEFAULT '',
+    subcounty TEXT,
+    village TEXT,
+    report_type VARCHAR(16),
+    week VARCHAR(8),
+    month VARCHAR(8),
+    quarter TEXT NOT NULL DEFAULT '',
+    year INTEGER NOT NULL,
+    "values" JSONB,
+    created TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

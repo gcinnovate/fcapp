@@ -14,6 +14,7 @@ from app.controllers.secreceivers_handler import SecondaryReceivers, OptOutSecon
 from app.controllers.test_handler import Test
 from app.controllers.babytrigger_handler import StartBabyTriggerFlow
 from app.controllers.locations_handler import SubRegionDistricts, DistrictSubcounties
+from app.controllers.flowdata_handler import FlowData
 
 URLS = (
     r'^/', Index,
@@ -29,5 +30,6 @@ URLS = (
     r'/optout_secondaryreceiver', OptOutSecondaryReceiver,
     r'/startbabytriggerflow', StartBabyTriggerFlow,
     r'/subregion_districts/(\w+)/?', SubRegionDistricts,
-    r'/district_subcounties/(\w+)/?', DistrictSubcounties
+    r'/district_subcounties/(\w+)/?', DistrictSubcounties,
+    r'/flowdata', FlowData,
 )
