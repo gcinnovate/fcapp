@@ -29,7 +29,7 @@ URLS = (
     r'/secreceivers', SecondaryReceivers,
     r'/optout_secondaryreceiver', OptOutSecondaryReceiver,
     r'/startbabytriggerflow', StartBabyTriggerFlow,
-    r'/subregion_districts/(\w+)/?', SubRegionDistricts,
-    r'/district_subcounties/(\w+)/?', DistrictSubcounties,
+    r'/subregion_districts/(.+)', SubRegionDistricts,
+    r'/district_subcounties/(.+)', DistrictSubcounties,
     r'/flowdata', FlowData,
 )
