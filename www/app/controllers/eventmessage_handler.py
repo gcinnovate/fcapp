@@ -15,6 +15,12 @@ class EventMessageForLanguage:
         #     web.header('WWW-Authenticate', 'Basic realm="Auth API"')
         #     web.ctx.status = '401 Unauthorized'
         #     return json.dumps({'detail': 'Authentication failed!'})
+        try:
+            offset = int(params.offset)
+        except:
+            offset = 10000
+            print("Invalid Offset: {}, Campaign Type: {}".format(params.offset, params.campaign_type))
+            return json.dumps({'message': ''})
         if params.campaign_type == 'prebirth':
             campaign_uuid = config['prebirth_campaign']
         else:
@@ -26,7 +32,7 @@ class EventMessageForLanguage:
             "FROM campaigns_campaignevent WHERE "
             "campaign_id = (SELECT id FROM campaigns_campaign WHERE uuid=$campaign) "
             "AND \"offset\"=$offset AND is_active='t';")
-        res = db.query(SQL, {'lang': params.lang, 'campaign': campaign_uuid, 'offset': params.offset})
+        res = db.query(SQL, {'lang': params.lang, 'campaign': campaign_uuid, 'offset': offset})
         if res:
             ret = res[0]
             return json.dumps({'message': ret['message']})
