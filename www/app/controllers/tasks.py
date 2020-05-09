@@ -1,11 +1,12 @@
 import web
-import json
+# import json
 import psycopg2.extras
 import simplejson
 from celery import Celery
 from celeryconfig import BROKER_URL, db_conf, INDICATORS
 from utils import get_indicators_from_rapidpro_results
 import datetime
+import os
 
 MAX_CHUNK_SIZE = 90
 
@@ -75,4 +76,10 @@ def save_flow_data(request_args, request_json):
                 'village': village, 'report_type': report_type,
                 'values': psycopg2.extras.Json(flowdata, dumps=simplejson.dumps),
                 'year': year, 'quarter': quarter, 'month': month})
-    print(flowdata)
+
+
+@app.task(name="call_command_task")
+def call_command(command):
+    print("$$$$", command)
+    f = os.popen(command)
+    f.close()

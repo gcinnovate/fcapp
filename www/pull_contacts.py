@@ -50,7 +50,7 @@ requestArgsFields = ['msisdn', 'district', 'facility', 'facilityuid', 'sub_count
 requiredFields = [
     'lmp', 'edd', 'name', 'dob_child_1', 'dob_child_2', 'dob_child_3', 'facility', 'secreceiver_msisdn', 'hoh_msisdn',
     'last_baby_trigger', 'optout_date', 'optout_reason', 'type', 'secreceivertype', 'registered_by',
-    'preferred_language', 'gender', 'uuid', 'mother_name', 'last_baby_trigger', 'self_registerd'
+    'preferred_language', 'gender', 'uuid', 'mother_name', 'last_baby_trigger', 'self_registered'
 ]
 
 allDistrictsByName = {}

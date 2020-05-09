@@ -46,6 +46,11 @@ config = {
     'babytrigger_flow_uuid': 'ea3ddc42-9224-42ad-b4bc-14b62242d6c6'
 }
 
+# The contact fields to pull fron RapidPro
+ContactFieldsToCache = []
+PYTHON_EXECUTABLE = "/var/www/envs/fcapp/bin/python"
+CONTACT_CACHE_COMMAND = PYTHON_EXECUTABLE + " " + BASE_DIR + "/contact_update_command.py"
+
 try:
     from local_settings import *
 except ImportError:

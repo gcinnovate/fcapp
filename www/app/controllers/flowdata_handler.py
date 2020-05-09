@@ -2,8 +2,8 @@ import web
 import json
 from . import db
 from app.tools.utils import get_basic_auth_credentials, auth_user
-from tasks import save_flow_data
-from settings import USE_OLD_WEBHOOK
+from tasks import save_flow_data, call_command
+from settings import USE_OLD_WEBHOOK, CONTACT_CACHE_COMMAND
 
 
 class FlowData:
@@ -35,3 +35,25 @@ class FlowData:
             save_flow_data.delay(request_args, values)
 
         return json.dumps({'message': 'success'})
+
+
+class CacheContact:
+    def GET(self, contact_uuid):
+
+        def invalid_command(arg):
+            import re
+            unwanted_regex = r'(rm|sudo|mv|\||mkfs|>|cp\s|chmod|chown|wget|shred|dd|gunzip)'
+            matches = re.match(unwanted_regex, arg)
+            if matches:
+                print("MATCHES")
+                return True
+            return False
+
+        if len(contact_uuid) < 36 or invalid_command(contact_uuid):
+            print("LEN:", len(contact_uuid), " ", invalid_command(contact_uuid))
+            return json.dumps({"message": "failed"})
+
+        cmd = CONTACT_CACHE_COMMAND + " -u {}".format(contact_uuid)
+        print(cmd)
+        call_command.delay(cmd)
+        return json.dumps({"message": "success"})
