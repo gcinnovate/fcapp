@@ -68,10 +68,13 @@ print(contactsUrl)
 with open(filename, 'r') as f:
     for l in f:
         uuid = l.strip()
+        args = ""
         if '&' not in contactsUrl:
-            contactsUrl += '&uuid={}'.format(uuid)
-        response = get_request(contactsUrl)
+            args = '&uuid={}'.format(uuid)
+        print(contactsUrl + args)
+        response = get_request(contactsUrl + args)
         contacts = response.json()
+
         for contact in contacts["results"]:
             request_args = {}
             values = {}
@@ -95,7 +98,7 @@ with open(filename, 'r') as f:
                     values[key] = '{}'.format(val) if val else ''
             # print(values)
             # print(request_args)
-            print("======>", request_args)
+            # print("======>", request_args)
             # requests.post(FLOW_DATA_API, params=request_args, data=json.dumps(values))
 
             district_id = allDistrictsByName.get(request_args.get('district'), None)
@@ -110,11 +113,13 @@ with open(filename, 'r') as f:
                 request_args.get('msisdn'), 'contacts', request_args.get('contact_uuid')])
             res = cur.fetchone()
             if res:
+                print("Updating.........")
                 rpt_id = res['id']
                 cur.execute(
                     "UPDATE fcapp_flow_data SET values=%s, updated= NOW() WHERE id = %s", [
                         psycopg2.extras.Json(values, dumps=simplejson.dumps), rpt_id])
             else:
+                print("Inserting.........")
                 cur.execute(
                     "INSERT INTO fcapp_flow_data (msisdn, contact_uuid, district, facility, facilityuid, subcounty, parish,"
                     "village, report_type, values, year, month) "
@@ -126,5 +131,6 @@ with open(filename, 'r') as f:
                         year, month
                     ]
                 )
-            conn.commit()
+        conn.commit()
+    f.close()
 conn.close()
