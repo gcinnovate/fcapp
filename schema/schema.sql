@@ -112,6 +112,24 @@ AS $$
             WHERE t.contact_id = a.id;
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION fcapp_get_registered_contact_details(contact text, registred_by text, OUT contact_id int, OUT name text, OUT uuid text,
+    OUT msisdn text, OUT contact_field int, OUT has_msisdn BOOLEAN)
+    RETURNS SETOF record
+AS $$
+    WITH t AS
+        (SELECT contact_id, string_value, contact_field_id FROM values_value
+            WHERE
+            contact_field_id IN (SELECT id FROM contacts_contactfield WHERE label IN('Registered By'))
+            AND substring(reverse(string_value), 0, 9) = substring(reverse(registred_by), 0, 9)
+        )
+            SELECT a.id, a.name, a.uuid, t.string_value, t.contact_field_id,
+                fcapp_has_msisdn(a.id) AS has_msisdn
+            FROM contacts_contact a, t, contacts_contacturn b
+            WHERE t.contact_id = a.id AND a.id = b.contact_id AND substring(reverse(b.path), 0, 9) = substring(reverse(contact), 0, 9);
+$$ LANGUAGE SQL;
+
+
+
 CREATE VIEW fcapp_contact_fields_view AS
 SELECT
     a.id, a.name,
@@ -131,10 +149,12 @@ FROM
 CREATE TABLE fcapp_flow_data(
     id BIGSERIAL PRIMARY KEY NOT NULL,
     msisdn TEXT NOT NULL DEFAULT '',
+    contact_uuid TEXT NOT NULL DEFAULT '',
     district INTEGER REFERENCES fcapp_locations(id),
     facility TEXT NOT NULL DEFAULT '',
     facilityuid TEXT NOT NULL DEFAULT '',
     subcounty TEXT,
+    parish TEXT,
     village TEXT,
     report_type VARCHAR(16),
     week VARCHAR(8),
@@ -145,3 +165,46 @@ CREATE TABLE fcapp_flow_data(
     created TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+
+CREATE OR REPLACE FUNCTION add_node(treeid INT, node_name TEXT, p_id INT) RETURNS BOOLEAN AS --p_id = id of node where to add
+$delim$
+    DECLARE
+    new_lft INTEGER;
+    lvl INTEGER;
+    dummy TEXT;
+    node_type INTEGER;
+    child_type INTEGER;
+    BEGIN
+        IF node_name = '' THEN
+            RAISE NOTICE 'Node name cannot be empty string';
+            RETURN FALSE;
+        END IF;
+        SELECT level INTO lvl FROM fcapp_locationtype WHERE id = (SELECT type_id FROM fcapp_locations WHERE id = p_id);
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'Cannot add node: failed to find level';
+        END IF;
+        SELECT rght, type_id INTO new_lft, node_type FROM fcapp_locations WHERE id =  p_id AND tree_id = treeid;
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'No such node id= % ', p_id;
+        END IF;
+
+        SELECT id INTO child_type FROM fcapp_locationtype WHERE level = lvl + 1 AND tree_id = tree_id;
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'You cannot add to root node';
+        END IF;
+
+        SELECT name INTO dummy FROM fcapp_locations WHERE name = node_name
+            AND tree_id = treeid AND type_id = child_type AND tree_parent_id = p_id;
+        IF FOUND THEN
+            RAISE NOTICE 'Node already exists : %', node_name;
+            RETURN FALSE;
+        END IF;
+
+        UPDATE fcapp_locations SET lft = lft + 2 WHERE lft > new_lft AND tree_id = treeid;
+        UPDATE fcapp_locations SET rght = rght + 2 WHERE rght >= new_lft AND tree_id = treeid;
+        INSERT INTO fcapp_locations (name, lft, rght, tree_id,type_id, tree_parent_id)
+        VALUES (node_name, new_lft, new_lft+1, treeid, child_type, p_id);
+        RETURN TRUE;
+    END;
+$delim$ LANGUAGE plpgsql;
