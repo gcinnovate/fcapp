@@ -126,5 +126,5 @@ with open(filename, 'r') as f:
                         year, month
                     ]
                 )
-                conn.commit()
+            conn.commit()
 conn.close()
