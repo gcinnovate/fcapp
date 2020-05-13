@@ -36,11 +36,11 @@ def get_request(url=config['default_api_uri']):
     return response
 
 # FLOW_DATA_API = 'http://localhost:9191/flowdata'
-MAX_CHUNK_SIZE = 400
+MAX_CHUNK_SIZE = 90
 flowStartsUrl = config["api_url"] + "flow_starts.json?"
 
 with open(filename, 'r') as f:
-    contactUUIDs = f.readlines()
+    contactUUIDs = ['%s' % u.strip() for u in f.readlines()]
     contacts_len = len(contactUUIDs)
     j = 0
     print("Starting {0} Contacts in Flow [uuid:{1}]".format(contacts_len, flowUUID))
@@ -54,7 +54,8 @@ with open(filename, 'r') as f:
         }
         post_data = json.dumps(params)
         try:
-            post_request(flowStartsUrl, post_data)
+            resp = post_request(flowStartsUrl, post_data)
+            print(resp.text)
         except:
             print("ERROR Startig Flow [uuid: {0}]".format(flowUUID))
         j = i
