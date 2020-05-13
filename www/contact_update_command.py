@@ -1,4 +1,4 @@
-from settings import config
+from settings import config, ContactFieldsToCache
 import sys
 import requests
 # import json
@@ -77,7 +77,7 @@ if uuid:
         for key, val in contact["fields"].items():
             if key in requestArgsFields:
                 request_args[key] = '{}'.format(val) if val else ''
-            if key in requiredFields:
+            if key in ContactFieldsToCache:
                 values[key] = '{}'.format(val) if val else ''
         # print(values)
         # print(request_args)

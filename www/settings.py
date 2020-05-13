@@ -47,7 +47,18 @@ config = {
 }
 
 # The contact fields to pull fron RapidPro
-ContactFieldsToCache = []
+ContactFieldsToCache = [
+    'lmp', 'edd', 'name', 'dob_child_1', 'dob_child_2', 'dob_child_3', 'facility', 'secreceiver_msisdn', 'hoh_msisdn',
+    'last_baby_trigger', 'optout_date', 'optout_reason', 'type', 'secreceivertype', 'registered_by',
+    'preferred_language', 'gender', 'uuid', 'mother_name', 'last_baby_trigger', 'self_registered',
+    # mostly EMTCT ones follow
+    'date_of_reprod_age_registrations', 'pregnancy_age_at_enrollment', 'fc_emtct_baby_date',
+    'next_appointment_date', 'fc_emtct_next_appointment_date', 'sex', 'age_of_baby_at_enrollment',
+    'last_visit_date', 'date_of_last_pregnancy_registration', 'health_facility', 'age_years',
+    'encounter_type', 'date_of_last_reprod_age_registration', 'fc_emtct_pregnancy_date',
+    'patient_phone_number', 'eid_number', 'trusted_person', 'dates_of_pregnancy_registrations',
+    'openmrs_id', 'last_reg_date', 'birth_date'
+]
 PYTHON_EXECUTABLE = "/var/www/envs/fcapp/bin/python"
 CONTACT_CACHE_COMMAND = PYTHON_EXECUTABLE + " " + BASE_DIR + "/contact_update_command.py"
 

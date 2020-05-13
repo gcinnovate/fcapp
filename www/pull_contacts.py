@@ -1,4 +1,4 @@
-from settings import config
+from settings import config, ContactFieldsToCache
 import sys
 import requests
 # import json
@@ -50,7 +50,8 @@ requestArgsFields = ['msisdn', 'district', 'facility', 'facilityuid', 'sub_count
 requiredFields = [
     'lmp', 'edd', 'name', 'dob_child_1', 'dob_child_2', 'dob_child_3', 'facility', 'secreceiver_msisdn', 'hoh_msisdn',
     'last_baby_trigger', 'optout_date', 'optout_reason', 'type', 'secreceivertype', 'registered_by',
-    'preferred_language', 'gender', 'uuid', 'mother_name', 'last_baby_trigger', 'self_registered'
+    'preferred_language', 'gender', 'uuid', 'mother_name', 'last_baby_trigger', 'self_registered',
+    'date_of_reprod_age_registrations'
 ]
 
 allDistrictsByName = {}
@@ -94,7 +95,7 @@ with open(filename, 'r') as f:
             for key, val in contact["fields"].items():
                 if key in requestArgsFields:
                     request_args[key] = '{}'.format(val) if val else ''
-                if key in requiredFields:
+                if key in ContactFieldsToCache:
                     values[key] = '{}'.format(val) if val else ''
             # print(values)
             # print(request_args)
