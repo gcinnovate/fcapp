@@ -106,7 +106,7 @@ for item in districtNames:
                 if resource.get('identifier')[0].get('id_type') == 'National ID':
                     nationalID = resource.get('identifier')[0].get('value')
 
-            if not facilityName or not facilityUID or not urns or not district:
+            if not facilityName or not facilityUID or not urns or not district or not telephone:
                 print("Missing Mandatory field")
                 invalidItems += 1
                 continue
@@ -114,10 +114,10 @@ for item in districtNames:
             contact_params = {
                 'urns': urns,
                 'name': name.title(),
-                'groups': ['VHT'],
+                'groups': [],
                 'fields': {
                     'gender': gender,
-                    'registered_by': 'CHWR',
+                    'registered_by': 'mHeroAPI',
                     'type': 'VHT',
                     'facility': facilityName,
                     'facilityuid': facilityUID,
