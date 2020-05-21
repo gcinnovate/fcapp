@@ -29,6 +29,13 @@ def get_url(url, payload={}):
     return res.text
 
 
+def get_request(url):
+    response = requests.get(url, headers={
+        'Content-type': 'application/json',
+        'Authorization': 'Token %s' % config['api_token']})
+    return response
+
+
 def post_request(url, data):
     response = requests.post(url, data=data, headers={
         'Content-type': 'application/json',
@@ -120,12 +127,27 @@ for item in districtNames:
                     'village': village.title() if village else '',
                 }
             }
+            pprint.pprint(contact_params['urns'])
 
-            contactsEndpoint = config['api_url'] + "contacts.json"
+            contactsEndpoint = config['api_url'] + "contacts.json?"
             try:
-                # post_request(contactsEndpoint, json.dumps(contact_params))
-                pprint.pprint(contact_params)
-            except:
-                print("FAILED to call contacts API")
+                # Let's try getting the contact
+                get_url = "{0}urn={1}".format(contactsEndpoint, "tel:" + telephone)
+                # print(get_url)
+                resp = get_request(get_url)
+                json_resp = resp.json()
+                if json_resp['results']:
+                    url = "{0}uuid={1}".format(contactsEndpoint, json_resp['results'][0]['uuid'])
+                    print("Reporter exits: [URL:{0}]".format(url))
+                    post_data = json.dumps(contact_params)
+                    resp = post_request(url, post_data)
+                    # print(json_resp['results'])
+                else:
+                    print("Reporter missing in RapidPro: {}".format(contact_params['urns']))
+                    post_data = json.dumps(contact_params)
+                    resp = post_request(contactsEndpoint, post_data)
+                    print(resp.text)
+            except Exception as e:
+                print("FAILED to call contacts API. Reason: {}".format(str(e)))
 print("totalItems:{0} invalidItems:{1} validItems:{2}".format(totalItems, invalidItems, validItems))
 conn.close()
