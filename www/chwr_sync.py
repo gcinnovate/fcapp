@@ -147,6 +147,7 @@ for item in districtNames:
                     'sub_county': subCounty.title() if subCounty else '',
                     'parish': parish.title() if parish else '',
                     'village': village.title() if village else '',
+                    'nin': nationalID
                 }
             }
             pprint.pprint(contact_params['urns'])
