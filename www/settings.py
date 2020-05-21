@@ -43,7 +43,11 @@ config = {
     'prebirth_campaign': '',
     'postbirth_campaign': '',
     'familyconnect_uri': 'http://localhost:8000/',
-    'babytrigger_flow_uuid': 'ea3ddc42-9224-42ad-b4bc-14b62242d6c6'
+    'babytrigger_flow_uuid': 'ea3ddc42-9224-42ad-b4bc-14b62242d6c6',
+    # CHWR confs
+    'chwr_user': '',
+    'chwr_password': '',
+    'chwr_baseurl': 'http://hris.health.go.ug/iHRIS/dev/chwr/FHIR/Person/_history?_format=json'
 }
 
 # The contact fields to pull fron RapidPro
