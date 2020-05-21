@@ -120,10 +120,18 @@ for item in districtNames:
                     nationalID = resource.get('identifier')[0].get('value')
 
             if not facilityName or not facilityUID or not urns or not district or \
-                    not telephone or not format_msisdn(telephone):
+                    not telephone:
                 print("Missing Mandatory field")
                 invalidItems += 1
                 continue
+            try:
+                if not format_msisdn(telephone):
+                    print("Invalid Telephone+: {}".format(telephone))
+                    invalidItems += 1
+                    continue
+            except phonenumbers.phonenumberutil.NumberParseException:
+                    print("Invalid Telephone: {}".format(telephone))
+                    invalidItems += 1
             validItems += 1
             contact_params = {
                 'urns': urns,
