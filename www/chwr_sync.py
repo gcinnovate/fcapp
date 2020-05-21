@@ -2,6 +2,7 @@ import requests
 import json
 import getopt
 import sys
+import phonenumbers
 import psycopg2
 import psycopg2.extras
 import pprint
@@ -22,6 +23,18 @@ for option, parameter in opts:
 
 user = config['chwr_user']
 passwd = config['chwr_password']
+
+
+def format_msisdn(msisdn=None):
+    """ given a msisdn, return in E164 format """
+    assert msisdn is not None
+    msisdn = msisdn.replace(' ', '')
+    num = phonenumbers.parse(msisdn, getattr(config, 'country', 'UG'))
+    is_valid = phonenumbers.is_valid_number(num)
+    if not is_valid:
+        return None
+    return phonenumbers.format_number(
+        num, phonenumbers.PhoneNumberFormat.E164)
 
 
 def get_url(url, payload={}):
@@ -95,7 +108,7 @@ for item in districtNames:
             altTelephone = ''
             for tel in resource.get('telecom', []):
                 if tel.get('use') == 'mobile':
-                    telephone = tel.get('value')
+                    telephone = tel.get('value', '')
                     urns.append('tel:{}'.format(telephone))
                 else:
                     altTelephone = tel.get('value')
@@ -106,7 +119,8 @@ for item in districtNames:
                 if resource.get('identifier')[0].get('id_type') == 'National ID':
                     nationalID = resource.get('identifier')[0].get('value')
 
-            if not facilityName or not facilityUID or not urns or not district or not telephone:
+            if not facilityName or not facilityUID or not urns or not district or \
+                    not telephone or not format_msisdn(telephone):
                 print("Missing Mandatory field")
                 invalidItems += 1
                 continue
