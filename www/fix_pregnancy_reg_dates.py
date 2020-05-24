@@ -7,13 +7,18 @@ from settings import config
 
 cmd = sys.argv[1:]
 opts, args = getopt.getopt(
-    cmd, 'f:',
-    ['filepath'])
+    cmd, 'f:h',
+    ['filepath', 'help'])
 
 filename = ""
 for option, parameter in opts:
     if option == '-f':
         filename = parameter
+    if option == '-h':
+        print(
+            "python " + __file__ +
+            " -f <file>\n\tfile should be a CSV of UUIDs and dates: UUID,DD-MM-YYYY HH24:MI")
+        sys.exit(1)
 
 
 def get_request(url):
