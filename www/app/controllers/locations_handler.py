@@ -22,6 +22,8 @@ class DistrictSubcounties:
         web.header("Content-Type", "application/json; charset=utf-8")
         if district in districtSubcounties:
             x = json.dumps(districtSubcounties[district])
+            # print(x)
+            # print(len(x))
             web.header("Content-Length", len(x))
-            return json.dumps(x)
+            return x
         return json.dumps({})
