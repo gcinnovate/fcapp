@@ -50,6 +50,8 @@ config = {
     'chwr_baseurl': 'http://hris.health.go.ug/iHRIS/dev/chwr/FHIR/Person/_history?_format=json'
 }
 
+USE_OLD_WEBHOOK = True
+
 # The contact fields to pull fron RapidPro
 ContactFieldsToCache = [
     'lmp', 'edd', 'name', 'dob_child_1', 'dob_child_2', 'dob_child_3', 'facility', 'secreceiver_msisdn', 'hoh_msisdn',
