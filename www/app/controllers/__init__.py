@@ -42,7 +42,7 @@ for r in rs:
     screen_2 = ""
     for idx, d in enumerate(ret, 1):
         dlist.append(d["name"])
-        if idx < 10:
+        if idx <= 10:
             screen_1 += "%s. %s\n" % (idx, d['name'])
             payload['districts']['%s' % idx] = d['name']
 
@@ -53,6 +53,7 @@ for r in rs:
     payload['district_list'] = ','.join(dlist)
     if screen_2:
         screen_1 += "11. More\n"
+        screen_1 += "0. Back\n"
         screen_2 += "0. Back"
 
     payload['screen_1'] = screen_1
@@ -91,10 +92,12 @@ for r in rs:
 
     if screen_2:
         screen_1 += "11. More\n"
-        screen_2 += "0. Back"
+        screen_2 += "0. Back\n"
     if screen_3:
         screen_2 += "21. More\n"
-        screen_3 += "0. Back"
+        screen_3 += "0. Back\n"
+    if not screen_2:
+        screen_1 += "0. Back\n"
 
     payload['subcounty_list'] = ','.join(slist)
     payload['s_screen_1'] = screen_1
