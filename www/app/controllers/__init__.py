@@ -50,11 +50,16 @@ for r in rs:
             screen_2 += "%s. %s\n" % ((idx + 1), d['name'])
             payload['districts']['%s' % idx] = d['name']
 
+    if len(dlist) > 10:
+        dlist.insert(10, '#')
     payload['district_list'] = ','.join(dlist)
+
     if screen_2:
         screen_1 += "11. More\n"
         screen_1 += "0. Back\n"
         screen_2 += "0. Back"
+    else:
+        screen_1 += "0. Back\n"
 
     payload['screen_1'] = screen_1
     payload['screen_2'] = screen_2
