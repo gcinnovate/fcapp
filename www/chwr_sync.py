@@ -121,7 +121,7 @@ for item in districtNames:
 
             if not facilityName or not facilityUID or not urns or not district or \
                     not telephone:
-                print(f"Missing Mandatory field: [Faclity: {facilityName}, DHIS2 UID: {facilityUID}, District: {district}, Tel: {telephone}]")
+                print(f"Missing Mandatory field: [Faclity: {facilityName}, DHIS2 UID: {facilityUID}, District: {district}, Tel: {telephone}, Name:{name}]")
                 invalidItems += 1
                 continue
             try:
